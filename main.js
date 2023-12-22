@@ -46,7 +46,7 @@ generatePlayfield();
 generateTetromino();
 
 const cells = document.querySelectorAll('.tetris div');
-console.log(cells);
+// console.log(cells);
 
 function drowTetromino() {
     const name = tetromino.name;
@@ -61,3 +61,13 @@ function drowTetromino() {
 };
 
 drowTetromino();
+
+document.addEventListener("keydown", onKeyDown);
+
+function onKeyDown(event) {
+    switch(event.key) {
+        case "ArrowLeft":
+            console.log("ArrowLeft");
+            break
+    }
+}
