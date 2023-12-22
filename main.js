@@ -62,12 +62,39 @@ function drowTetromino() {
 
 drowTetromino();
 
+function drow() {
+    cells.forEach(function(cell) {cell.removeAttribute('class')});
+    drowTetromino();  
+};
+
 document.addEventListener("keydown", onKeyDown);
 
 function onKeyDown(event) {
     switch(event.key) {
+        case "ArrowDown":
+            moveTetrominoDown();
+            break;
+
         case "ArrowLeft":
-            console.log("ArrowLeft");
-            break
-    }
-}
+            moveTetrominoLeft();
+            break;
+
+        case "ArrowRight":
+            moveTetrominoRight();
+            break;  
+    };
+
+    drow();
+};
+
+function moveTetrominoDown() {
+    tetromino.row += 1;
+};
+
+function moveTetrominoLeft() {
+    tetromino.column -= 1;
+};
+
+function  moveTetrominoRight() {
+    tetromino.column += 1;
+};
