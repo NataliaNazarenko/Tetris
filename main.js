@@ -54,6 +54,15 @@ function convertPositionToIndex(row, column) {
     return row * PLAYFIELD_COLUMNS + column;
 };
 
+function randomColor() {
+    const red = Math.floor(Math.random() * 256);
+    const green = Math.floor(Math.random() * 256);
+    const blue = Math.floor(Math.random() * 256);
+ 
+    const color = "rgb(" + red + ", " + green + ", " + blue + ")";
+    return color;
+};
+
 function generatePlayfield() {
     for(let i = 0; i < PLAYFIELD_ROWS * PLAYFIELD_COLUMNS; i+=1) {
         const div = document.createElement('div');
@@ -71,13 +80,14 @@ function generateTetromino() {
 
     const startRow = 0;
     const startColumn = Math.floor((PLAYFIELD_COLUMNS - matrixTetro[0].length) / 2);
-
+    const colorTetro = randomColor();
 
     tetromino = {
         name: nameTetro,
         matrix: matrixTetro,
         row: startRow,
         column: startColumn,
+        color: colorTetro,
     };
 };
 
@@ -107,6 +117,7 @@ function drowTetromino() {
             if(tetromino.matrix[row][column] == 0) continue;
             const cellIndex = convertPositionToIndex(tetromino.row + row, tetromino.column + column);
             cells[cellIndex].classList.add(name);
+            cells[cellIndex].style.backgroundColor = tetromino.color;
         };
     };
 };
@@ -114,10 +125,13 @@ function drowTetromino() {
 drowTetromino();
 
 function drow() {
-    cells.forEach(function(cell) {cell.removeAttribute('class')});
+    cells.forEach(function(cell) {
+        cell.removeAttribute('class');
+        cell.style.removeProperty("background");
+    });
     drowPlayField();
     drowTetromino();
-    console.table(playfield);
+    // console.table(playfield);
 };
 
 document.addEventListener("keydown", onKeyDown);
@@ -180,7 +194,7 @@ function placeTetromino() {
     for(let row = 0; row < matrixSize; row +=1) {
         for(let column = 0; column < matrixSize; column +=1) {
             if(!tetromino.matrix[row][column]) continue;
-            playfield[tetromino.row + row][tetromino.column + column] = TETROMINO_NAMES[0];
+            playfield[tetromino.row + row][tetromino.column + column] = tetromino.name;
         };
     };
     generateTetromino();
