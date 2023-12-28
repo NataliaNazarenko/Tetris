@@ -138,6 +138,10 @@ document.addEventListener("keydown", onKeyDown);
 
 function onKeyDown(event) {
     switch(event.key) {
+        case "ArrowUp":
+            rotateTetromino();
+            break;
+
         case "ArrowDown":
             moveTetrominoDown();
             break;
@@ -209,4 +213,26 @@ function placeTetromino() {
         };
     };
     generateTetromino();
+};
+
+function rotateTetromino() {
+    const oldMatrix = tetromino.matrix;
+    const rotatedMatrix = rotateMatrix(tetromino.matrix);
+    tetromino.matrix = rotatedMatrix;
+    if(isValid()) {
+        tetromino.matrix = oldMatrix;
+    };
+};
+
+function rotateMatrix(matrixTetramino) {
+    const N = matrixTetramino.length;
+    const rotateMatrix = [];
+
+    for(let i = 0; i < N; i+=1 ) {
+        rotateMatrix[i] = [];
+        for(let j = 0; j < N; j+=1) {
+            rotateMatrix[i][j] = matrixTetramino[N - j - 1][i];
+        };
+    };
+    return rotateMatrix;
 };
