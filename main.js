@@ -211,17 +211,38 @@ function placeTetromino() {
             playfield[tetromino.row + row][tetromino.column + column] = tetromino.name;
         };
     };
-    // const filledRows = findFilledRows();
+    const filledRows = findFilledRows();
+    removeFillRows(filledRows);
     generateTetromino();
 };
 
+function removeFillRows(filledRows) {
+    filledRows.forEach(row => {
+        dropRowsAbove(row);
+    });
+};
+
+function dropRowsAbove(rowDelete) {
+    for(let row = rowDelete; row > 0; row-=1) {
+        playfield[row] = playfield[row - 1];
+    };
+    playfield[0] = new Array(PLAYFIELD_COLUMNS).fill(0);
+};
+
 function findFilledRows() {
-    for(let row = 0; row < matrixSize; row +=1) {
-        for(let column = 0; column < matrixSize; column +=1) {
-            if(!tetromino.matrix[row][column]) continue;
-            playfield[tetromino.row + row][tetromino.column + column] = tetromino.name;
+    const filledRows = [];
+    for(let row = 0; row < PLAYFIELD_ROWS; row +=1) {
+        let filledColumns = 0;
+        for(let column = 0; column < PLAYFIELD_COLUMNS; column +=1) {
+            if(playfield[row][column] !== 0) {
+                filledColumns += 1;
+            };
+        };
+        if(PLAYFIELD_COLUMNS === filledColumns) {
+            filledRows.push(row);
         };
     };
+    return filledRows;
 };
 
 function rotateTetromino() {
